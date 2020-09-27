@@ -7,11 +7,17 @@ export namespace Action {
   export async function run() {
     try {
       const context = github.context
-      const payload = context.payload.pull_request
-      if (payload && Util.isValidEvent('pull_request', 'opened')) {
-        if (payload.draft) {
-          core.debug('Ignore draft PR')
-          return
+      const payload = context.payload.pull_request || context.payload.issue
+      if (
+        payload &&
+        (Util.isValidEvent('pull_request', 'opened') ||
+          Util.isValidEvent('issues', 'opened'))
+      ) {
+        if (context.payload.pull_request) {
+          if (payload.draft) {
+            core.debug('Ignore draft PR')
+            return
+          }
         }
 
         const configPath = core.getInput('CONFIG_FILE')
@@ -39,7 +45,7 @@ export namespace Action {
           return
         }
 
-        if (config.addReviewers) {
+        if (config.addReviewers && context.payload.pull_request) {
           const { reviewers, team_reviewers } = Util.chooseReviewers(
             owner,
             config,

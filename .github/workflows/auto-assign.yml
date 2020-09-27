@@ -1,9 +1,9 @@
-name: Label Commands
+name: Auto Assign
 on:
   issues:
-    types: [labeled, unlabeled]
+    types: [opened]
   pull_request:
-    types: [labeled, unlabeled]
+    types: [opened]
 
 jobs:
   test:

@@ -1,5 +1,5 @@
-name: Auto Assign
-description: Add reviewers/assignees to pull requests when pull requests are opened.
+name: AutoAssign
+description: Add reviewers/assignees to issues/PRs when issues/PRs are opened.
 author: bubkoo <bubkoo.wy@gmail.com>
 inputs:
   GITHUB_TOKEN:
@@ -13,4 +13,4 @@ runs:
   main: dist/index.js
 branding:
   icon: flag
-  color: green # gray-dark purple red orange green blue yellow black white
+  color: black # gray-dark purple red orange green blue yellow black white

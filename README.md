@@ -1,20 +1,22 @@
 # Auto Assign
 
-Github Action to add reviewers/assignees to pull requests when pull requests are opened.
+Github Action to add reviewers/assignees to issues/PRs when issues/PRs are opened.
 
 ## Features
 
-- When the pull request is opened, automatically add reviewers/assignees to the pull request.
-- If the number of reviewers/assignees is specified, randomly add reviewers/assignees to the pull request.
-- If the title of the pull request contains a specific keyword, do not add reviewers/assignees to the pull request.
+- When the issues/PRs is opened, automatically add reviewers/assignees to the issues/PRs.
+- If the number of reviewers/assignees is specified, randomly add reviewers/assignees to the issues/PRs.
+- If the title of the issues/PRs contains a specific keyword, do not add reviewers/assignees to the issues/PRs.
 
 ## Usage
 
 Create `.github/workflows/auto-assign.yml` in the default branch:
 
 ```yaml
-name: Label Actions
+name: Auto Assign
 on:
+  issues:
+    types: [opened]
   pull_request:
     types: [opened]
 jobs:
