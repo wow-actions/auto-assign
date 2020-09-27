@@ -50,6 +50,12 @@ export namespace Action {
             owner,
             config,
           )
+
+          core.debug(`Reviewers: ${JSON.stringify(reviewers, null, 2)}`)
+          core.debug(
+            `Team Reviewers: ${JSON.stringify(team_reviewers, null, 2)}`,
+          )
+
           if (reviewers.length > 0 || team_reviewers.length > 0) {
             await octokit.pulls.requestReviewers({
               ...context.repo,
@@ -62,6 +68,7 @@ export namespace Action {
 
         if (config.addAssignees) {
           const assignees = Util.chooseAssignees(owner, config)
+          core.debug(`Assignees: ${JSON.stringify(assignees, null, 2)}`)
           if (assignees.length > 0) {
             await octokit.issues.addAssignees({
               ...context.repo,
