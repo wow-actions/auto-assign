@@ -1,4 +1,4 @@
-name: AutoAssign
+name: Auto Assign Issues/PRs
 description: Add reviewers/assignees to issues/PRs when issues/PRs are opened.
 author: bubkoo <bubkoo.wy@gmail.com>
 inputs:
