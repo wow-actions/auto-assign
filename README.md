@@ -51,34 +51,34 @@ jobs:
 ## Config
 
 ```yaml
-# Set to true to add reviewers to PRs
+# Set to true to add reviewers to issues/PRs
 addReviewers: true
 
-# Set to true to add assignees to PRs
+# Set to true to add assignees to issues/PRs
 addAssignees: true
 
-# Set to 'author' to add PR's author as a assignee
+# Set to 'author' to add issue's/PR's author as a assignee
 # addAssignees: author
 
-# A list of reviewers to be added to PRs (GitHub user name)
+# A list of reviewers to be added to issues/PRs (GitHub user name)
 reviewers:
   - reviewerA
   - reviewerB
   - reviewerC
 
-# A number of reviewers added to the PR
+# A number of reviewers added to the issues/PRs
 # Set 0 to add all the reviewers (default: 0)
 numberOfReviewers: 0
 # A list of assignees, overrides reviewers if set
 # assignees:
 #   - assigneeA
 
-# A number of assignees to add to the PRs
+# A number of assignees to add to the issues/PRs
 # Set to 0 to add all of the assignees.
 # Uses numberOfReviewers if unset.
 # numberOfAssignees: 2
 
-# A list of keywords to be skipped the process if PR's title include it
+# A list of keywords to be skipped the process if issue/PR's title include it
 # skipKeywords:
 #   - wip
 ```
