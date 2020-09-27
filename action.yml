@@ -1,0 +1,16 @@
+name: Auto Assign
+description: Add reviewers/assignees to pull requests when pull requests are opened.
+author: bubkoo <bubkoo.wy@gmail.com>
+inputs:
+  GITHUB_TOKEN:
+    description: Your GitHub token for authentication
+    required: true
+  CONFIG_FILE:
+    description: Config file path relative to your repo's root.
+    required: false
+runs:
+  using: node12
+  main: dist/index.js
+branding:
+  icon: flag
+  color: green # gray-dark purple red orange green blue yellow black white
