@@ -20,7 +20,7 @@ on:
   pull_request:
     types: [opened]
 jobs:
-  test:
+  run:
     runs-on: ubuntu-latest
     steps:
       - uses: bubkoo/auto-assign@v1
