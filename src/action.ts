@@ -8,10 +8,14 @@ export namespace Action {
     try {
       const context = github.context
       const payload = context.payload.pull_request || context.payload.issue
+      core.debug(`event: ${context.eventName}`)
+      core.debug(`action: ${context.payload.action}`)
+
       if (
         payload &&
-        (Util.isValidEvent('pull_request', 'opened') ||
-          Util.isValidEvent('issues', 'opened'))
+        (Util.isValidEvent('issues', 'opened') ||
+          Util.isValidEvent('pull_request', 'opened') ||
+          Util.isValidEvent('pull_request_target', 'opened'))
       ) {
         if (context.payload.pull_request) {
           if (payload.draft) {
