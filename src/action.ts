@@ -6,7 +6,7 @@ import { Config } from './config'
 export namespace Action {
   export async function run() {
     try {
-      const context = github.context
+      const { context } = github
       const payload = context.payload.pull_request || context.payload.issue
       core.debug(`event: ${context.eventName}`)
       core.debug(`action: ${context.payload.action}`)
@@ -38,7 +38,7 @@ export namespace Action {
           )
         }
 
-        const title = payload.title
+        const { title } = payload
         const owner = payload.user.login
 
         if (
@@ -50,6 +50,7 @@ export namespace Action {
         }
 
         if (config.addReviewers && context.payload.pull_request) {
+          // eslint-disable-next-line camelcase
           const { reviewers, team_reviewers } = Util.chooseReviewers(
             owner,
             config,
@@ -61,7 +62,7 @@ export namespace Action {
           )
 
           if (reviewers.length > 0 || team_reviewers.length > 0) {
-            await octokit.pulls.requestReviewers({
+            await octokit.rest.pulls.requestReviewers({
               ...context.repo,
               reviewers,
               team_reviewers,
@@ -74,7 +75,7 @@ export namespace Action {
           const assignees = Util.chooseAssignees(owner, config)
           core.debug(`Assignees: ${JSON.stringify(assignees, null, 2)}`)
           if (assignees.length > 0) {
-            await octokit.issues.addAssignees({
+            await octokit.rest.issues.addAssignees({
               ...context.repo,
               assignees,
               issue_number: payload.number,

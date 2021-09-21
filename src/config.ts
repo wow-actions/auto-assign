@@ -31,7 +31,7 @@ export namespace Config {
       if (path) {
         const content = await Util.getFileContent(octokit, path)
         if (content) {
-          const config = yaml.safeLoad(content) as Definition
+          const config = yaml.load(content) as Definition
           return merge({}, defaults, config)
         }
       }

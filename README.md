@@ -1,6 +1,5 @@
-# Auto Assign
-
-Github Action to add reviewers/assignees to issues/PRs when issues/PRs are opened.
+<h1 align="center">Auto Assign</h1>
+<p align="center"><strong>Automatically add reviewers/assignees to issues/PRs when issues/PRs are opened</strong></p>
 
 ## Features
 
@@ -23,13 +22,17 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: bubkoo/auto-assign@v1
+      - uses: wow-actions/auto-assign@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CONFIG_FILE: config-file-path
 ```
 
-### Options
+### Inputs
+
+Various inputs are defined to let you configure the action:
+
+> Note: [Workflow command and parameter names are not case-sensitive](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-commands-for-github-actions#about-workflow-commands).
 
 - `GITHUB_TOKEN`: Your GitHub token for authentication.
 - `CONFIG_FILE`: Path to configuration file. Custom config will [deep merged](https://lodash.com/docs/4.17.15#merge) with the following default config:

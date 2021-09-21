@@ -10,8 +10,8 @@ export namespace Util {
   }
 
   export function isValidEvent(event: string, action?: string) {
-    const context = github.context
-    const payload = context.payload
+    const { context } = github
+    const { payload } = context
     if (event === context.eventName) {
       return action == null || action === payload.action
     }
@@ -23,12 +23,12 @@ export namespace Util {
     path: string,
   ) {
     try {
-      const response = await octokit.repos.getContent({
+      const response = await octokit.rest.repos.getContent({
         ...github.context.repo,
         path,
       })
 
-      const content = response.data.content
+      const { content } = response.data as any
       return Buffer.from(content, 'base64').toString()
     } catch (err) {
       return null
@@ -39,6 +39,7 @@ export namespace Util {
     title: string,
     skipKeywords: string[],
   ): boolean {
+    // eslint-disable-next-line no-restricted-syntax
     for (const skipKeyword of skipKeywords) {
       if (title.toLowerCase().includes(skipKeyword.toLowerCase())) {
         return true
@@ -56,7 +57,7 @@ export namespace Util {
   function chooseUsers(
     candidates: string[],
     count: number,
-    filterUser: string = '',
+    filterUser = '',
   ): ChooseUsersResponse {
     const { teams, users } = candidates.reduce(
       (acc: ChooseUsersResponse, reviewer: string): ChooseUsersResponse => {
@@ -96,6 +97,7 @@ export namespace Util {
     desiredNumber: number,
   ): string[] {
     const users: string[] = []
+    // eslint-disable-next-line
     for (const group in groups) {
       users.push(...chooseUsers(groups[group], desiredNumber, owner).users)
     }
@@ -107,6 +109,7 @@ export namespace Util {
     config: Config.Definition,
   ): {
     reviewers: string[]
+    // eslint-disable-next-line camelcase
     team_reviewers: string[]
   } {
     const { reviewGroups, numberOfReviewers, reviewers } = config
@@ -163,7 +166,7 @@ export namespace Util {
       )
     }
 
-    const candidates = assignees ? assignees : reviewers
+    const candidates = assignees || reviewers
     return chooseUsers(
       candidates || [],
       numberOfAssignees || numberOfReviewers,
