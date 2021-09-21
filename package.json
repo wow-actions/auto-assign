@@ -1,6 +1,6 @@
 {
   "name": "auto-assign",
-  "description": "A Github Action to add reviewers/assignees to pull requests when pull requests are opened.",
+  "description": "Automatically add reviewers/assignees to issues/PRs when issues/PRs are opened",
   "version": "1.0.1",
   "main": "dist/index.js",
   "repository": "https://github.com/wow-actions/auto-assign",
