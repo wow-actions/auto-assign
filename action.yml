@@ -9,7 +9,7 @@ inputs:
     description: Config file path relative to your repo's root.
     required: false
 runs:
-  using: node12
+  using: node16
   main: dist/index.js
 branding:
   icon: flag
