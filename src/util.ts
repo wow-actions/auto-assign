@@ -1,176 +1,120 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import sampleSize from 'lodash.samplesize'
-import { Config } from './config'
+import { Inputs } from './inputs'
 
-export namespace Util {
-  export function getOctokit() {
-    const token = core.getInput('GITHUB_TOKEN', { required: true })
-    return github.getOctokit(token)
+export function getOctokit() {
+  const token = core.getInput('GITHUB_TOKEN', { required: true })
+  return github.getOctokit(token)
+}
+
+export function isValidEvent(event: string, action?: string | string[]) {
+  const { context } = github
+  const { payload } = context
+  if (event === context.eventName) {
+    return (
+      action == null ||
+      (payload.action &&
+        (action === payload.action || action.includes(payload.action)))
+    )
   }
+  return false
+}
 
-  export function isValidEvent(event: string, action?: string) {
-    const { context } = github
-    const { payload } = context
-    if (event === context.eventName) {
-      return action == null || action === payload.action
-    }
-    return false
-  }
-
-  export async function getFileContent(
-    octokit: ReturnType<typeof getOctokit>,
-    path: string,
-  ) {
-    try {
-      const response = await octokit.rest.repos.getContent({
-        ...github.context.repo,
-        path,
-      })
-
-      const { content } = response.data as any
-      return Buffer.from(content, 'base64').toString()
-    } catch (err) {
-      return null
+export function hasSkipKeywords(title: string, keywords: string[]): boolean {
+  const titleLowerCase = title.toLowerCase()
+  // eslint-disable-next-line no-restricted-syntax
+  for (const word of keywords) {
+    if (titleLowerCase.includes(word.toLowerCase())) {
+      return true
     }
   }
 
-  export function hasSkipKeywords(
-    title: string,
-    skipKeywords: string[],
-  ): boolean {
-    // eslint-disable-next-line no-restricted-syntax
-    for (const skipKeyword of skipKeywords) {
-      if (title.toLowerCase().includes(skipKeyword.toLowerCase())) {
-        return true
-      }
-    }
+  return false
+}
 
-    return false
-  }
-
-  interface ChooseUsersResponse {
+function chooseUsers(candidates: string[], count: number, filterUser: string) {
+  const { teams, users } = candidates.reduce<{
     teams: string[]
     users: string[]
-  }
-
-  function chooseUsers(
-    candidates: string[],
-    count: number,
-    filterUser = '',
-  ): ChooseUsersResponse {
-    const { teams, users } = candidates.reduce(
-      (acc: ChooseUsersResponse, reviewer: string): ChooseUsersResponse => {
-        const separator = '/'
-        const isTeam = reviewer.includes(separator)
-        if (isTeam) {
-          const team = reviewer.split(separator)[1]
-          acc.teams = [...acc.teams, team]
-        } else if (reviewer !== filterUser) {
-          acc.users = [...acc.users, reviewer]
-        }
-        return acc
-      },
-      {
-        teams: [],
-        users: [],
-      },
-    )
-
-    // all-assign
-    if (count === 0) {
-      return {
-        teams,
-        users,
+  }>(
+    (memo, reviewer: string) => {
+      const separator = '/'
+      const isTeam = reviewer.includes(separator)
+      if (isTeam) {
+        const team = reviewer.split(separator)[1]
+        memo.teams.push(team)
+      } else if (reviewer.toLowerCase() !== filterUser.toLowerCase()) {
+        memo.users.push(reviewer)
       }
-    }
+      return memo
+    },
+    {
+      teams: [],
+      users: [],
+    },
+  )
 
+  // all-assign
+  if (count === 0) {
     return {
       teams,
-      users: sampleSize(users, count),
+      users,
     }
   }
 
-  function chooseUsersFromGroups(
-    owner: string,
-    groups: { [key: string]: string[] } | undefined,
-    desiredNumber: number,
-  ): string[] {
-    const users: string[] = []
-    // eslint-disable-next-line
-    for (const group in groups) {
-      users.push(...chooseUsers(groups[group], desiredNumber, owner).users)
-    }
-    return users
+  return {
+    teams: sampleSize(teams, count),
+    users: sampleSize(users, count),
   }
+}
 
-  export function chooseReviewers(
-    owner: string,
-    config: Config.Definition,
-  ): {
-    reviewers: string[]
-    // eslint-disable-next-line camelcase
-    team_reviewers: string[]
-  } {
-    const { reviewGroups, numberOfReviewers, reviewers } = config
-    if (reviewGroups && Object.keys(reviewGroups).length > 0) {
-      const chosenReviewers = chooseUsersFromGroups(
-        owner,
-        reviewGroups,
-        numberOfReviewers,
-      )
-
-      return {
-        reviewers: chosenReviewers,
-        team_reviewers: [],
-      }
-    }
-
-    const chosenReviewers = chooseUsers(
-      reviewers || [],
-      numberOfReviewers,
-      owner,
-    )
-    return {
-      reviewers: chosenReviewers.users,
-      team_reviewers: chosenReviewers.teams,
-    }
+export function chooseReviewers(
+  owner: string,
+  inputs: Inputs,
+): {
+  reviewers: string[]
+  teamReviewers: string[]
+} {
+  const { numberOfReviewers, reviewers } = inputs
+  const chosenReviewers = chooseUsers(reviewers || [], numberOfReviewers, owner)
+  return {
+    reviewers: chosenReviewers.users,
+    teamReviewers: chosenReviewers.teams,
   }
+}
 
-  export function chooseAssignees(
-    owner: string,
-    config: Config.Definition,
-  ): string[] {
-    const {
-      addAssignees,
-      assigneeGroups,
-      assignees,
-      reviewers,
-      numberOfAssignees,
-      numberOfReviewers,
-    } = config
-    if (typeof addAssignees === 'string') {
-      if (addAssignees !== 'author') {
-        throw new Error(
-          "Error in configuration file to do with using `addAssignees`. Expected `addAssignees` variable to be either boolean or 'author'",
-        )
-      }
-      return [owner]
-    }
-
-    if (assigneeGroups && Object.keys(assigneeGroups).length > 0) {
-      return chooseUsersFromGroups(
-        owner,
-        assigneeGroups,
-        numberOfAssignees || numberOfReviewers,
+export function chooseAssignees(owner: string, inputs: Inputs): string[] {
+  const {
+    addAssignees,
+    assignees,
+    reviewers,
+    numberOfAssignees,
+    numberOfReviewers,
+  } = inputs
+  if (typeof addAssignees === 'string') {
+    if (addAssignees !== 'author') {
+      throw new Error(
+        "Error in configuration file to do with using `addAssignees`. Expected `addAssignees` variable to be either boolean or 'author'",
       )
     }
-
-    const candidates = assignees || reviewers
-    return chooseUsers(
-      candidates || [],
-      numberOfAssignees || numberOfReviewers,
-      owner,
-    ).users
+    return [owner]
   }
+
+  const count = numberOfAssignees || numberOfReviewers
+  const candidates = assignees || reviewers || []
+  return chooseUsers(candidates, count, owner).users
+}
+
+export function hasAnyLabel(labels: string[]): boolean {
+  const { context } = github
+  const payload = context.payload.pull_request || context.payload.issue
+  const currentLabels: { name: string }[] = (payload as any).labels || []
+  return currentLabels.some((label) => labels.includes(label.name))
+}
+
+export function skip(msg: string) {
+  const { context } = github
+  const type = context.payload.pull_request ? 'PR' : 'issue'
+  core.info(`Skip to run since the ${type} ${msg}`)
 }

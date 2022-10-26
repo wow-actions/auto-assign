@@ -1,3 +1,3 @@
-import { Action } from './action'
+import { run } from './action'
 
-Action.run()
+run()

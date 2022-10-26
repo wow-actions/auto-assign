@@ -9,7 +9,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: 🚧　Install
         run: |
           yarn
@@ -19,4 +19,12 @@ jobs:
       - uses: ./
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CONFIG_FILE: .github/workflows/config/auto-assign.yml
+          addReviewers: true
+          addAssignees: author
+          reviewers: |
+            bubkoo
+            bubkoo
+            bubkoo
+          numberOfReviewers: 1
+          skipKeywords: |
+            wip

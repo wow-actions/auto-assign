@@ -4,5 +4,8 @@
   "printWidth": 80,
   "trailingComma": "all",
   "proseWrap": "never",
-  "overrides": [{ "files": ".prettierrc", "options": { "parser": "json" } }]
+  "overrides": [
+    { "files": ".eslintrc", "options": { "parser": "json" } },
+    { "files": ".prettierrc", "options": { "parser": "json" } }
+  ]
 }

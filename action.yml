@@ -1,16 +1,51 @@
 name: Auto Assign Issues/PRs
-description: Automatically add reviewers/assignees to issues/PRs when issues/PRs are opened.
+description: Automatically add reviewers/assignees to issues/PRs.
 author: bubkoo <bubkoo.wy@gmail.com>
 inputs:
   GITHUB_TOKEN:
-    description: Your GitHub token for authentication
+    description: Your GitHub token for authentication.
     required: true
-  CONFIG_FILE:
-    description: Config file path relative to your repo's root.
+  addReviewers:
+    description: Set to true to add reviewers to PRs.
     required: false
+    default: true
+  addAssignees:
+    description: Set to true to add assignees to PRs. Set to 'author' to add PR's author as a assignee.
+    required: false
+    default: author
+  reviewers:
+    description: A list of reviewers(GitHub user name) to be added to PRs.
+    required: false
+  assignees:
+    description: A list of assignees(GitHub user name) to be added to issue/PR. Uses `reviewers` if not set.
+    required: false
+  numberOfReviewers:
+    description: Number of reviewers added to the PR. Set `0` to add all the reviewers (default `0`).
+    required: false
+    default: 0
+  numberOfAssignees:
+    description: Number of assignees added to the PR. Set `0` to add all the assignees (default `0`). Uses `numberReviewers` if not set.
+    required: false
+    default: 0
+  skipKeywords:
+    description: A list of keywords to be skipped the process if PR's title include it.
+    required: false
+  skipDraft:
+    description: Set to `false` to run on draft PRs.
+    required: false
+    default: true
+  includeLabels:
+    description: Only to run when issue/PR has one of the label.
+    required: false
+  excludeLabels:
+    description: Not to run when issue/PR has one of the label.
+    required: false
+
+
 runs:
   using: node16
   main: dist/index.js
+
 branding:
   icon: flag
   color: black # gray-dark purple red orange green blue yellow black white
