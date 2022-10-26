@@ -1,6 +1,0 @@
-{
- "extends": "@bubkoo/tsconfig",
-  "include": [
-    "src/**/*.ts"
-  ]
-}
