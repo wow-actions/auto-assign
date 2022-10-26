@@ -1,12 +1,6 @@
 <h1 align="center">Auto Assign</h1>
 <p align="center"><strong>Automatically add reviewers/assignees to issues/PRs</strong></p>
 
-## Features
-
-- When the issues/PRs is opened, automatically add reviewers/assignees to the issues/PRs.
-- If the number of reviewers/assignees is specified, randomly add reviewers/assignees to the issues/PRs.
-- If the title of the issues/PRs contains a specific keyword, do not add reviewers/assignees to the issues/PRs.
-
 ## Usage
 
 Create `.github/workflows/auto-assign.yml` in the default branch:
