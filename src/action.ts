@@ -67,10 +67,33 @@ export async function run() {
         }
       }
 
+      const isValidUser = async (username: string) => {
+        try {
+          const res = await octokit.rest.users.getByUsername({ username })
+          return res.status === 200 && res.data.id > 0
+        } catch (error) {
+          return false
+        }
+      }
+
       const owner = payload.user.login
 
       if (inputs.addReviewers && context.payload.pull_request) {
-        const { reviewers, teamReviewers } = util.chooseReviewers(owner, inputs)
+        const { reviewers: candidates, teamReviewers } = util.chooseReviewers(
+          owner,
+          inputs,
+        )
+        const reviewers: string[] = []
+        for (let i = 0; i < candidates.length; i++) {
+          const username = candidates[i]
+          // eslint-disable-next-line no-await-in-loop
+          const valid = await isValidUser(username)
+          if (valid) {
+            reviewers.push(username)
+          } else {
+            core.info(`Ignored unknown reviewer "${username}"`)
+          }
+        }
 
         if (reviewers.length > 0 || teamReviewers.length > 0) {
           core.info(`Reviewers: ${JSON.stringify(reviewers, null, 2)}`)
@@ -86,7 +109,19 @@ export async function run() {
       }
 
       if (inputs.addAssignees) {
-        const assignees = util.chooseAssignees(owner, inputs)
+        const assignees: string[] = []
+        const candidates = util.chooseAssignees(owner, inputs)
+        for (let i = 0; i < candidates.length; i++) {
+          const username = candidates[i]
+          // eslint-disable-next-line no-await-in-loop
+          const valid = await isValidUser(username)
+          if (valid) {
+            assignees.push(username)
+          } else {
+            core.info(`Ignored unknown assignee "${username}"`)
+          }
+        }
+
         if (assignees.length > 0) {
           core.info(`Assignees: ${JSON.stringify(assignees, null, 2)}`)
           await octokit.rest.issues.addAssignees({
