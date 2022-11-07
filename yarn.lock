@@ -561,10 +561,10 @@
   resolved "https://registry.npmjs.org/@types/minimatch/-/minimatch-3.0.5.tgz#1001cc5e6a3704b83c236027e77f2f58ea010f40"
   integrity sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==
 
-"@types/node@^18.11.5":
-  version "18.11.5"
-  resolved "https://registry.npmmirror.com/@types/node/-/node-18.11.5.tgz#1bc94cf2f9ab5fe33353bc7c79c797dcc5325bef"
-  integrity sha512-3JRwhbjI+cHLAkUorhf8RnqUbFXajvzX4q6fMn5JwkgtuwfYtRQYI3u4V92vI6NJuTsbBQWWh3RZjFsuevyMGQ==
+"@types/node@^18.11.9":
+  version "18.11.9"
+  resolved "https://registry.npmmirror.com/@types/node/-/node-18.11.9.tgz#02d013de7058cea16d36168ef2fc653464cfbad4"
+  integrity sha512-CRpX21/kGdzjOpFsZSkcrXMGIBWMGNIHXXBVFSH+ggkftxg+XYP20TESbh+zFvFj3EQOl5byk0HTRn1IL6hbqg==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
@@ -663,14 +663,15 @@
   resolved "https://registry.npmmirror.com/@vercel/ncc/-/ncc-0.34.0.tgz#d0139528320e46670d949c82967044a8f66db054"
   integrity sha512-G9h5ZLBJ/V57Ou9vz5hI8pda/YQX5HQszCs3AmIus3XzsmRn/0Ptic5otD3xVST8QLKk7AMk7AqpsyQGN7MZ9A==
 
-"@wow-actions/parse-inputs@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.npmmirror.com/@wow-actions/parse-inputs/-/parse-inputs-1.1.0.tgz#59569117ba50010b138ad94a29da68d1757e4240"
-  integrity sha512-+hfOul8cNzjBA4BxKLAQMWtEhKv9BpEYt6CMa8bTNrNI94L9Ce1uEKVsdYHIjEUTfoWvn26vez8pU01P1Sjvxg==
+"@wow-actions/parse-inputs@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.npmmirror.com/@wow-actions/parse-inputs/-/parse-inputs-1.2.0.tgz#d974ee426da7efc136a72e33368725fcd0c4de30"
+  integrity sha512-gKAVjSlMiNn9vwwcFHZWFzZZsW60wqPsyfNWCKmsacG/1mjIDfoPpjfi3/M2S2KDSa4FwiZL+F9EV7yurzVe1w==
   dependencies:
     js-yaml "^4.1.0"
     lodash.camelcase "^4.3.0"
     lodash.kebabcase "^4.1.1"
+    lodash.snakecase "^4.1.1"
     lodash.uniq "^4.5.0"
     parse-json "^6.0.2"
     strip-json-comments "^5.0.0"
@@ -2070,6 +2071,11 @@ lodash.samplesize@^4.2.0:
   version "4.2.0"
   resolved "https://registry.npmjs.org/lodash.samplesize/-/lodash.samplesize-4.2.0.tgz#460762fbb2b342290517499e90d51586db465ff9"
   integrity sha1-Rgdi+7KzQikFF0mekNUVhttGX/k=
+
+lodash.snakecase@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.npmmirror.com/lodash.snakecase/-/lodash.snakecase-4.1.1.tgz#39d714a35357147837aefd64b5dcbb16becd8f8d"
+  integrity sha512-QZ1d4xoBHYUeuouhEq3lk3Uq7ldgyFXGBhg04+oRLnIz8o9T65Eh+8YdroUwn846zchkA9yDsDl5CVVaV2nqYw==
 
 lodash.uniq@^4.5.0:
   version "4.5.0"
