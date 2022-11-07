@@ -35,21 +35,38 @@ export async function run() {
         return util.skip('title includes skip-keywords')
       }
 
-      if (inputs.includeLabels && inputs.includeLabels.length) {
-        const hasLabels = util.hasAnyLabel(inputs.includeLabels)
-        if (!hasLabels) {
-          return util.skip(`is not labeled with any of the "includeLabels"`)
-        }
-      }
-
-      if (inputs.excludeLabels && inputs.excludeLabels.length) {
-        const hasLabels = util.hasAnyLabel(inputs.excludeLabels)
-        if (hasLabels) {
-          return util.skip(`is labeled with one of the "excludeLabels"`)
-        }
-      }
-
       const octokit = util.getOctokit()
+
+      const checkIncludeLabels =
+        inputs.includeLabels != null && inputs.includeLabels.length > 0
+      const checkExcludeLabels =
+        inputs.excludeLabels != null && inputs.excludeLabels.length > 0
+
+      if (checkIncludeLabels || checkExcludeLabels) {
+        const labelsRes = await octokit.rest.issues.listLabelsOnIssue({
+          ...context.repo,
+          issue_number: payload.number,
+          per_page: 100,
+        })
+        const labels = labelsRes.data.map((item) => item.name)
+        const hasAnyLabel = (inputs: string[]) =>
+          labels.some((label) => inputs.includes(label))
+
+        if (checkIncludeLabels) {
+          const hasLabels = hasAnyLabel(inputs.includeLabels!)
+          if (!hasLabels) {
+            return util.skip(`is not labeled with any of the "includeLabels"`)
+          }
+        }
+
+        if (checkExcludeLabels) {
+          const hasLabels = hasAnyLabel(inputs.excludeLabels!)
+          if (hasLabels) {
+            return util.skip(`is labeled with one of the "excludeLabels"`)
+          }
+        }
+      }
+
       const owner = payload.user.login
 
       if (inputs.addReviewers && context.payload.pull_request) {

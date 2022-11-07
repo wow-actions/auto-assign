@@ -20,11 +20,15 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           addReviewers: true
-          addAssignees: author
+          addAssignees: true
           reviewers: |
             bubkoo
             bubkoo
+          assignees: |
             bubkoo
           numberOfReviewers: 1
           skipKeywords: |
+            wip
+          excludeLabels: |
+            dependencies
             wip

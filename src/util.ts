@@ -77,7 +77,11 @@ export function chooseReviewers(
   teamReviewers: string[]
 } {
   const { numberOfReviewers, reviewers } = inputs
-  const chosenReviewers = chooseUsers(reviewers || [], numberOfReviewers, owner)
+  const chosenReviewers = chooseUsers(
+    reviewers || [],
+    numberOfReviewers || 0,
+    owner,
+  )
   return {
     reviewers: chosenReviewers.users,
     teamReviewers: chosenReviewers.teams,
@@ -101,16 +105,9 @@ export function chooseAssignees(owner: string, inputs: Inputs): string[] {
     return [owner]
   }
 
-  const count = numberOfAssignees || numberOfReviewers
+  const count = numberOfAssignees || numberOfReviewers || 0
   const candidates = assignees || reviewers || []
   return chooseUsers(candidates, count, owner).users
-}
-
-export function hasAnyLabel(labels: string[]): boolean {
-  const { context } = github
-  const payload = context.payload.pull_request || context.payload.issue
-  const currentLabels: { name: string }[] = (payload as any).labels || []
-  return currentLabels.some((label) => labels.includes(label.name))
 }
 
 export function skip(msg: string) {
