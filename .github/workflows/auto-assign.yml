@@ -25,6 +25,7 @@ jobs:
             bubkoo
             bubkoo
           assignees: |
+            bubkoo
             this-is-an-unknown-assignee
           numberOfReviewers: 1
           skipKeywords: |
