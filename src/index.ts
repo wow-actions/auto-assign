@@ -58,8 +58,30 @@ async function run() {
         }
       }
 
-      await util.addReviewers(octokit, inputs)
-      await util.addAssignees(octokit, inputs)
+      const { assignees, teams, reviewers } = await util.getState(octokit)
+      if (teams.length || reviewers.length) {
+        const s = (len: number) => (len > 1 ? 's' : '')
+        const logTeams = `team_reviewer${s(teams.length)} "${teams.join(', ')}"`
+        const logReviewers = `reviewer${s(reviewers.length)} "${reviewers.join(
+          ', ',
+        )}"`
+
+        if (teams.length && reviewers.length) {
+          util.skip(`has requested ${logReviewers} and ${logTeams}`)
+        } else if (teams.length) {
+          util.skip(`has requested ${logTeams}`)
+        } else {
+          util.skip(`has requested ${logReviewers}`)
+        }
+      } else {
+        await util.addReviewers(octokit, inputs)
+      }
+
+      if (assignees.length) {
+        util.skip(`has assigned to ${assignees.join(', ')}`)
+      } else {
+        await util.addAssignees(octokit, inputs)
+      }
     }
   } catch (e) {
     core.error(e)
