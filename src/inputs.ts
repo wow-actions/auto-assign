@@ -4,7 +4,7 @@ export function getInputs() {
   return parseInputs({
     skipDraft: { type: 'boolean' },
     addReviewers: { type: 'boolean', defaultValue: true },
-    addAssignees: { type: 'booleanOrString', defaultValue: 'author' },
+    addAssignees: { type: 'boolean', defaultValue: true },
     reviewers: { type: 'words' },
     assignees: { type: 'words' },
     numberOfAssignees: { type: 'int', defaultValue: 0 },

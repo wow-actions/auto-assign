@@ -10,9 +10,9 @@ inputs:
     required: false
     default: true
   addAssignees:
-    description: Set to true to add assignees to PRs. Set to 'author' to add PR's author as a assignee.
+    description: Set to true to add assignees to PRs.
     required: false
-    default: author
+    default: true
   reviewers:
     description: A list of reviewers(GitHub user name) to be added to PRs.
     required: false
