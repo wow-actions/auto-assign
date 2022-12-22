@@ -95,10 +95,9 @@ async function run() {
           }
         }
 
+        core.info(`Reviewers: ${JSON.stringify(reviewers, null, 2)}`)
+        core.info(`Team Reviewers: ${JSON.stringify(teamReviewers, null, 2)}`)
         if (reviewers.length > 0 || teamReviewers.length > 0) {
-          core.info(`Reviewers: ${JSON.stringify(reviewers, null, 2)}`)
-          core.info(`Team Reviewers: ${JSON.stringify(teamReviewers, null, 2)}`)
-
           await octokit.rest.pulls.requestReviewers({
             ...context.repo,
             reviewers,
@@ -122,8 +121,8 @@ async function run() {
           }
         }
 
+        core.info(`Assignees: ${JSON.stringify(assignees, null, 2)}`)
         if (assignees.length > 0) {
-          core.info(`Assignees: ${JSON.stringify(assignees, null, 2)}`)
           await octokit.rest.issues.addAssignees({
             ...context.repo,
             assignees,

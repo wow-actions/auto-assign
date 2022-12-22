@@ -23,8 +23,7 @@ jobs:
           numberOfReviewers: 1
           numberOfAssignees: 1
           reviewers: |
-            bubkoo
-            bubkoo
+            /authors
           assignees: |
             this-is-an-unknown-assignee
             /authors
