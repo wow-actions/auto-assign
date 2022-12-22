@@ -77,14 +77,10 @@ export function chooseReviewers(
   teamReviewers: string[]
 } {
   const { numberOfReviewers, reviewers } = inputs
-  const chosenReviewers = chooseUsers(
-    reviewers || [],
-    numberOfReviewers || 0,
-    owner,
-  )
+  const chosen = chooseUsers(reviewers || [], numberOfReviewers || 0, owner)
   return {
-    reviewers: chosenReviewers.users,
-    teamReviewers: chosenReviewers.teams,
+    reviewers: chosen.users,
+    teamReviewers: chosen.teams,
   }
 }
 

@@ -1,10 +1,9 @@
 name: Auto Assign
 on:
   issues:
-    types: [opened]
+    types: [opened, edited, labeled, unlabeled]
   pull_request:
-    types: [opened]
-
+    types: [opened, edited, labeled, unlabeled]
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -21,14 +20,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           addReviewers: true
           addAssignees: true
+          numberOfReviewers: 1
+          numberOfAssignees: 1
           reviewers: |
             bubkoo
             bubkoo
           assignees: |
             this-is-an-unknown-assignee
-          numberOfReviewers: 1
-          skipKeywords: |
-            wip
-          excludeLabels: |
-            dependencies
-            wip
+            /authors
+          skipKeywords: wip
+          excludeLabels: dependencies, wip
