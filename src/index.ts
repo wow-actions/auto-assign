@@ -67,15 +67,6 @@ async function run() {
         }
       }
 
-      const isValidUser = async (username: string) => {
-        try {
-          const res = await octokit.rest.users.getByUsername({ username })
-          return res.status === 200 && res.data.id > 0
-        } catch (error) {
-          return false
-        }
-      }
-
       const owner = payload.user.login
 
       if (inputs.addReviewers && context.payload.pull_request) {
@@ -87,7 +78,7 @@ async function run() {
         for (let i = 0; i < candidates.length; i++) {
           const username = candidates[i]
           // eslint-disable-next-line no-await-in-loop
-          const valid = await isValidUser(username)
+          const valid = await util.isValidUser(octokit, username)
           if (valid) {
             reviewers.push(username)
           } else {
@@ -113,7 +104,7 @@ async function run() {
         for (let i = 0; i < candidates.length; i++) {
           const username = candidates[i]
           // eslint-disable-next-line no-await-in-loop
-          const valid = await isValidUser(username)
+          const valid = await util.isValidUser(octokit, username)
           if (valid) {
             assignees.push(username)
           } else {

@@ -21,6 +21,18 @@ export function isValidEvent(event: string, action?: string | string[]) {
   return false
 }
 
+export async function isValidUser(
+  octokit: ReturnType<typeof getOctokit>,
+  username: string,
+) {
+  try {
+    const res = await octokit.rest.users.getByUsername({ username })
+    return res.status === 200 && res.data.id > 0
+  } catch (error) {
+    return false
+  }
+}
+
 export function hasSkipKeywords(title: string, keywords: string[]): boolean {
   const titleLowerCase = title.toLowerCase()
   // eslint-disable-next-line no-restricted-syntax
