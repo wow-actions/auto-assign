@@ -6,11 +6,13 @@ import { getInputs } from './inputs'
 async function run() {
   try {
     const { context } = github
-    const payload = context.payload.pull_request || context.payload.issue
 
     core.debug(`event: ${context.eventName}`)
     core.debug(`action: ${context.payload.action}`)
 
+    const pr = context.payload.pull_request
+    const issue = context.payload.issue
+    const payload = pr || issue
     const actions = ['opened', 'edited', 'labeled', 'unlabeled']
     if (
       payload &&
@@ -21,8 +23,8 @@ async function run() {
       const inputs = getInputs()
       core.debug(`inputs: \n${JSON.stringify(inputs, null, 2)}`)
 
-      if (context.payload.pull_request) {
-        if (payload.draft && inputs.skipDraft !== false) {
+      if (pr) {
+        if (pr.draft && inputs.skipDraft !== false) {
           return util.skip('is draft')
         }
       }
@@ -36,6 +38,7 @@ async function run() {
       }
 
       const octokit = util.getOctokit()
+      const owner = payload.user.login
 
       const checkIncludeLabels =
         inputs.includeLabels != null && inputs.includeLabels.length > 0
@@ -67,9 +70,8 @@ async function run() {
         }
       }
 
-      const owner = payload.user.login
-
-      if (inputs.addReviewers && context.payload.pull_request) {
+      if (inputs.addReviewers && pr) {
+        core.info(`Adding reviewers for pr #[${pr.number}]`)
         const { reviewers: candidates, teamReviewers } = util.chooseReviewers(
           owner,
           inputs,
@@ -87,7 +89,7 @@ async function run() {
         }
 
         core.info(`Reviewers: ${JSON.stringify(reviewers, null, 2)}`)
-        core.info(`Team Reviewers: ${JSON.stringify(teamReviewers, null, 2)}`)
+        core.info(`Teams: ${JSON.stringify(teamReviewers, null, 2)}`)
         if (reviewers.length > 0 || teamReviewers.length > 0) {
           await octokit.rest.pulls.requestReviewers({
             ...context.repo,
@@ -99,6 +101,10 @@ async function run() {
       }
 
       if (inputs.addAssignees) {
+        core.info(
+          `Adding assignees for ${pr ? 'pr' : 'issue'} #[${payload.number}]`,
+        )
+
         const assignees: string[] = []
         const candidates = util.chooseAssignees(owner, inputs)
         for (let i = 0; i < candidates.length; i++) {
