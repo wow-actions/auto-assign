@@ -190,7 +190,7 @@ export async function chooseAssignees(
   } catch (error) {
     core.info('failed to get team members')
   }
-
+  core.debug(`assignee candidates: [${users.join(', ')}]`)
   return chooseUsers(users, count, owner).users
 }
 
