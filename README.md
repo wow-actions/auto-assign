@@ -1,5 +1,5 @@
 <h1 align="center">Auto Assign</h1>
-<p align="center"><strong>Automatically add reviewers/assignees to issues/PRs</strong></p>
+<p align="center">Automatically add reviewers/assignees to issues/PRs</p>
 
 ## Usage
 
