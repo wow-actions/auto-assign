@@ -1,3 +1,11 @@
+## [3.0.1](https://github.com/wow-actions/auto-assign/compare/v3.0.0...v3.0.1) (2023-01-03)
+
+
+### Bug Fixes
+
+* build errors ([c1e3cb3](https://github.com/wow-actions/auto-assign/commit/c1e3cb328c395ff5a0214385e210947f7371610e))
+* fix git author name ([e29295b](https://github.com/wow-actions/auto-assign/commit/e29295b16ae9d236c4c4d61e1844d84f678d37b7))
+
 # 1.0.0 (2023-01-03)
 
 
