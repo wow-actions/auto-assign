@@ -24,7 +24,7 @@ jobs:
           private_key: ${{ secrets.PRIVATE_KEY }}
       - name: 📦　Release
         uses: wow-actions/release-github-action@v1
-        with:
+        env:
           GITHUB_TOKEN: ${{ env.BOT_TOKEN }}
           GIT_COMMITTER_NAME: ${{ env.BOT_NAME }}
           GIT_COMMITTER_EMAIL: ${{ env.BOT_NAME }}@users.noreply.github.com

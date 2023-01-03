@@ -1,12 +1,10 @@
 <h1 align="center">Auto Assign</h1>
 <p align="center">Automatically add reviewers/assignees to issues/PRs</p>
 
-## Features
 - [Randomly](https://lodash.com/docs/#sampleSize) pick assignees and reviewers from candidate list.
 - Automatically ignore invalid Github username.
 - Automatically skip assigned issues/PRs and reviewer requested PRs.
 - **Try-to** pick the member of team as assignee when adding [team](https://docs.github.com/en/organizations/organizing-members-into-teams/about-teams) to assignees.
-
 
 **Note that** the default `${{ secrets.GITHUB_TOKEN }}` does not have the permission to **add teams as reviewers** or to **list members of a team**. As a workaround:
 
@@ -15,11 +13,6 @@
   - Finally, replace the `GITHUB_TOKEN` with the new secret, e.g. `GITHUB_TOKEN: ${{ secrets.NAME_OF_MY_SECRET_CONTAINING_PAT_WITH_REPO_ACCESS }}` instead of `GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}`.
 
 Or with a cool but slightly cumbersome solution: create a private [github app](https://probot.github.io/) for your org with custom permissions and avatar, then [use the app token in out workflow](https://github.com/wow-actions/use-app-token), e.g. [wow-actions-bot](https://github.com/apps/wow-actions-bot).
-
-
-
-
-
 
 ## Usage
 
