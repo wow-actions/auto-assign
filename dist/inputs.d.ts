@@ -1,13 +1,13 @@
 export declare function getInputs(): {
-    skipDraft?: boolean | undefined;
-    addReviewers?: boolean | undefined;
-    addAssignees?: boolean | undefined;
-    reviewers?: string[] | undefined;
-    assignees?: string[] | undefined;
-    numberOfAssignees?: number | undefined;
-    numberOfReviewers?: number | undefined;
-    skipKeywords?: string[] | undefined;
-    includeLabels?: string[] | undefined;
-    excludeLabels?: string[] | undefined;
+    skipDraft: boolean;
+    addReviewers: boolean;
+    addAssignees: boolean;
+    reviewers: string[];
+    assignees: string[];
+    numberOfAssignees: number;
+    numberOfReviewers: number;
+    skipKeywords: string[];
+    includeLabels: string[];
+    excludeLabels: string[];
 };
 export type Inputs = ReturnType<typeof getInputs>;

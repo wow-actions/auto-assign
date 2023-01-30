@@ -1,3 +1,10 @@
+## [3.0.2](https://github.com/wow-actions/auto-assign/compare/v3.0.1...v3.0.2) (2023-01-30)
+
+
+### Bug Fixes
+
+* try to fix "Cannot read properties of undefined (reading 'length')" ([48e18c6](https://github.com/wow-actions/auto-assign/commit/48e18c66f6ca928e2e8dc0352e1dd937be60074a)), closes [#11](https://github.com/wow-actions/auto-assign/issues/11)
+
 ## [3.0.1](https://github.com/wow-actions/auto-assign/compare/v3.0.0...v3.0.1) (2023-01-03)
 
 
