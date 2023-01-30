@@ -64,29 +64,35 @@ export async function getState(octokit: Octokit) {
   const { context } = github
   const pr = context.payload.pull_request
   const issue = context.payload.issue
-  let assignees: string[]
-  let teams: string[]
-  let reviewers: string[]
+  let teams: string[] = []
+  let reviewers: string[] = []
+  let assignees: string[] = []
 
   if (pr) {
     const { data } = await octokit.rest.pulls.get({
       ...context.repo,
       pull_number: pr.number,
     })
-    teams = data.requested_teams ? data.requested_teams.map((t) => t.slug) : []
-    reviewers = data.requested_reviewers
-      ? data.requested_reviewers.map((u) => u.login)
-      : []
-    assignees = data.assignees ? data.assignees.map((u) => u.login) : []
+    if (data.requested_teams) {
+      teams = data.requested_teams.map((t) => t.slug)
+    }
+    if (data.requested_reviewers) {
+      reviewers = data.requested_reviewers.map((u) => u.login)
+    }
+    if (data.assignees) {
+      assignees = data.assignees.map((u) => u.login)
+    }
   } else if (issue) {
     const { data } = await octokit.rest.issues.get({
       ...context.repo,
       issue_number: issue.number,
     })
-    assignees = data.assignees ? data.assignees.map((u) => u.login) : []
+    if (data.assignees) {
+      assignees = data.assignees.map((u) => u.login)
+    }
   }
 
-  return { assignees: assignees!, teams: teams!, reviewers: reviewers! }
+  return { assignees, teams, reviewers }
 }
 
 function chooseUsers(candidates: string[], count: number, filterUser: string) {

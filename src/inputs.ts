@@ -2,7 +2,7 @@ import parseInputs from '@wow-actions/parse-inputs'
 
 export function getInputs() {
   return parseInputs({
-    skipDraft: { type: 'boolean' },
+    skipDraft: { type: 'boolean', defaultValue: true },
     addReviewers: { type: 'boolean', defaultValue: true },
     addAssignees: { type: 'boolean', defaultValue: true },
     reviewers: { type: 'words' },

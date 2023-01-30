@@ -36,22 +36,22 @@ async function run() {
 
       const octokit = util.getOctokit()
       const checkIncludings =
-        inputs.includeLabels != null && inputs.includeLabels.length > 0
+        inputs.includeLabels && inputs.includeLabels.length > 0
       const checkExcludings =
-        inputs.excludeLabels != null && inputs.excludeLabels.length > 0
+        inputs.excludeLabels && inputs.excludeLabels.length > 0
       if (checkIncludings || checkExcludings) {
         const labels = await util.getIssueLabels(octokit, payload.number)
         const hasAny = (arr: string[]) => labels.some((l) => arr.includes(l))
 
         if (checkIncludings) {
-          const any = hasAny(inputs.includeLabels!)
+          const any = hasAny(inputs.includeLabels)
           if (!any) {
             return util.skip(`is not labeled with any of the "includeLabels"`)
           }
         }
 
         if (checkExcludings) {
-          const any = hasAny(inputs.excludeLabels!)
+          const any = hasAny(inputs.excludeLabels)
           if (any) {
             return util.skip(`is labeled with one of the "excludeLabels"`)
           }
