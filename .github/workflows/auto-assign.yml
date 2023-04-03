@@ -29,9 +29,9 @@ jobs:
           numberOfReviewers: 1
           numberOfAssignees: 1
           reviewers: |
-            /authors
+            /sureshselvarajan
           assignees: |
             this-is-an-unknown-assignee
-            /authors
+            /sureshselvarajan
           skipKeywords: wip
           excludeLabels: dependencies, wip
