@@ -1,3 +1,9 @@
+## [3.0.3] (2024-03-01)
+
+* Fixed an issue where addingReviewers was actually checking the `addAssignees` input value instead.
+
+### Bug Fixes 
+
 ## [3.0.2](https://github.com/wow-actions/auto-assign/compare/v3.0.1...v3.0.2) (2023-01-30)
 
 

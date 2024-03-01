@@ -29,7 +29,7 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: wow-actions/auto-assign@v3
+      - uses: ericjuden/wow-actions-auto-assign@v3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # using the `org/team_slug` or `/team_slug` syntax to add git team as reviewers
