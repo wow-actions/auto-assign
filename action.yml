@@ -1,4 +1,4 @@
-name: Auto Assign Issues/PRs
+name: Auto Assign Issues/PRs Redux
 description: Automatically add reviewers/assignees to issues/PRs.
 author: bubkoo <bubkoo.wy@gmail.com>
 inputs:
