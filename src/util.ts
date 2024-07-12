@@ -148,7 +148,7 @@ function chooseReviewers(
 
 export async function addReviewers(octokit: Octokit, inputs: Inputs) {
   const pr = github.context.payload.pull_request
-  if (!inputs.addAssignees || !pr) {
+  if (!inputs.addReviewers || !pr) {
     return
   }
 
